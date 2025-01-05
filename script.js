@@ -271,6 +271,28 @@ class ChatBot {
             .catch(error => {
                 console.error('背景图片加载失败:', error);
             });
+
+        // 在 ChatBot 类中添加更多讽刺语气模板
+        this.sarcasmResponses = {
+            obvious: [
+                '哇哦，这个问题真是让我大开眼界呢（翻白眼）',
+                '让我猜猜，你是认真在问这个吗？',
+                '这个问题的难度堪比1+1呢~',
+                '（假装思考）该用多少智商来回答呢？'
+            ],
+            complex: [
+                '啊，终于有个能让我用上1%脑容量的问题了',
+                '看来你也不是那么不开窍嘛~',
+                '哎呀，这问题问得我都想鼓掌了呢',
+                '（优雅地整理假发）让我认真回答一下'
+            ],
+            repeated: [
+                '这个问题怎么这么眼熟？该不会...',
+                '让我们换个方式再问一遍吧，显得不那么重复~',
+                '（扶额）我们是不是已经讨论过这个了？',
+                '这题我熟，不就是刚刚那个换个马甲吗？'
+            ]
+        };
     }
 
     setupEventListeners() {
@@ -360,10 +382,13 @@ class ChatBot {
         messageDiv.className = `message ${type}`;
         messageDiv.textContent = text;
         
+        const [color1, color2] = this.getRandomColors();
         if (type === 'bot') {
-            const [color1, color2] = this.getRandomColors();
-            messageDiv.style.setProperty('--random-color1', color1);
-            messageDiv.style.setProperty('--random-color2', color2);
+            messageDiv.style.setProperty('--bot-color1', color1);
+            messageDiv.style.setProperty('--bot-color2', color2);
+        } else {
+            messageDiv.style.setProperty('--user-color1', color1);
+            messageDiv.style.setProperty('--user-color2', color2);
         }
         
         this.chatMessages.appendChild(messageDiv);
@@ -491,13 +516,15 @@ class ChatBot {
         const prefix = style.prefix[Math.floor(Math.random() * style.prefix.length)];
         const suffix = style.suffix[Math.floor(Math.random() * style.suffix.length)];
         
-        // 随机添加情境反应
-        const shouldAddReaction = Math.random() > 0.7;
-        const reaction = shouldAddReaction ? 
-            this.situationalResponses.confused[Math.floor(Math.random() * this.situationalResponses.confused.length)] 
-            : '';
+        // 根据问题特征添加讽刺回应
+        let sarcasm = '';
+        if (response.length < 50) {
+            sarcasm = this.sarcasmResponses.obvious[Math.floor(Math.random() * this.sarcasmResponses.obvious.length)];
+        } else if (response.length > 200) {
+            sarcasm = this.sarcasmResponses.complex[Math.floor(Math.random() * this.sarcasmResponses.complex.length)];
+        }
 
-        return `${prefix} ${reaction ? reaction + ' ' : ''}${response} ${suffix}`;
+        return `${prefix} ${sarcasm ? sarcasm + ' ' : ''}${response} ${suffix}`;
     }
 }
 
