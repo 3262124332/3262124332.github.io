@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小唐的吐槽空间</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 只保留对话框部分 -->
+        <div class="chat-section">
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <!-- 移除静态消息，将由 JavaScript 动态添加 -->
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" id="chat-input" placeholder="来吧，问点有趣的...">
+                    <button id="send-button">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
